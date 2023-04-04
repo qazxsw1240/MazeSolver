@@ -23,28 +23,28 @@ public class Main {
             lines[i] = READER.readLine();
         MazeSolver solver = new MazeSolver(lines);
         Stack<Point> pointStack = new Stack<>();
-        Point p;
-        pointStack.push(p = new Point(0, 0));
+        pointStack.push(new Point(0, 0));
         while (!pointStack.isEmpty()) {
             READER.readLine();
-            solver.set(p = pointStack.peek(), MazeSolver.MazePoint.VISITED);
+            Point point = pointStack.peek();
+            solver.set(point, MazeSolver.MazePoint.VISITED);
             System.out.println(solver);
-            System.out.println(p);
+            System.out.println(point);
             System.out.println();
-            if (solver.isGoal(p))
+            if (solver.isGoal(point))
                 break;
-            List<Point> adjacentList = solver.getAdjacentList(p);
+            List<Point> adjacentList = solver.getAdjacentList(point);
             if (adjacentList.isEmpty()) {
                 do {
                     solver.set(pointStack.pop(), MazeSolver.MazePoint.BLOCKED);
-                    adjacentList = solver.getAdjacentList(p = pointStack.peek());
+                    adjacentList = solver.getAdjacentList(pointStack.peek());
                 } while (adjacentList.isEmpty());
             } else {
                 for (Point adjacent : adjacentList)
                     pointStack.push(adjacent);
             }
         }
-        if (solver.isGoal(p)) {
+        if (solver.isGoal(pointStack.pop())) {
             System.out.println("성공");
         } else {
             System.out.println("넌 못 빠져나간다.");
